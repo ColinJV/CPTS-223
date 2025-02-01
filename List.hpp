@@ -267,6 +267,7 @@ bool List<T>::deleteFront(void) {
     Node<T>* pTemp = this->getHeadPtr()->getNext();
     delete mpHead;
     mpHead = pTemp;
+    return(mpHead == pTemp);
 }
 
 #endif

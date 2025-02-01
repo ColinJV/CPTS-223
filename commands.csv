@@ -1,30 +1,30 @@
-free,Display the total free space along with memory used and swap memory in the system and buffers used by the kernel.
-env,Print environment variables. Also used to run a utility or command in a custom environment.
-diff,Display the differences in files by comparing them line by line.
-clear,Used to clear the terminal screen.
-find,Used to find files and directories and perform subsequent operations on them.
-echo,Display a line of text/string that are passed as an argument.
-grep,Search a file for a particular pattern of characters and display all lines that contain that pattern.
-df,Display information related to file systems about total space and available space.
-chown,Change the file Owner or group.
-alias,Instructs shell to replace on string with another string while executing the commands.
-cat,See the calendar.
-chmod,Used to change the access mode of a file.
-who,Gets information about currently logged in user on to system.
-top,Provides a real-time view of the running system.
-kill,Terminate processes manually.
-ps,List currently running processes and their PIDs.
-make,Compiles program pieces and builds an executable program.
-gcc,Compiles mainly C/C++.
-g++,Preprocessing; compilation; assembly; and linking of source code to generate an executable file.
-man,Display the user manual of any terminal command.
-scp,Copy file(s) between servers securely.
-ssh,Securely connect to a remote server/system.
-mv,Move a file.
-cp,Copy.
-rm,Delete a file.
-rmdir,Delete a directory.
-mkdir,Create a directory.
-cd,Change current working directory.
-ls,List files and directories in current working directory.
 pwd,Print working directory.
+ls,List files and directories in current working directory.
+cd,Change current working directory.
+mkdir,Create a directory.
+rmdir,Delete a directory.
+rm,Delete a file.
+cp,Copy.
+mv,Move a file.
+ssh,Securely connect to a remote server/system.
+scp,Copy file(s) between servers securely.
+man,Display the user manual of any terminal command.
+g++,Preprocessing; compilation; assembly; and linking of source code to generate an executable file.
+gcc,Compiles mainly C/C++.
+make,Compiles program pieces and builds an executable program.
+ps,List currently running processes and their PIDs.
+kill,Terminate processes manually.
+top,Provides a real-time view of the running system.
+who,Gets information about currently logged in user on to system.
+chmod,Used to change the access mode of a file.
+cat,See the calendar.
+alias,Instructs shell to replace on string with another string while executing the commands.
+chown,Change the file Owner or group.
+df,Display information related to file systems about total space and available space.
+grep,Search a file for a particular pattern of characters and display all lines that contain that pattern.
+echo,Display a line of text/string that are passed as an argument.
+find,Used to find files and directories and perform subsequent operations on them.
+clear,Used to clear the terminal screen.
+diff,Display the differences in files by comparing them line by line.
+env,Print environment variables. Also used to run a utility or command in a custom environment.
+free,Display the total free space along with memory used and swap memory in the system and buffers used by the kernel.
