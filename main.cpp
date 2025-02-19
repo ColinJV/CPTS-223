@@ -131,7 +131,7 @@ void testMoveConstructor(BST<string>& testTree) {
 	if (movedBST.size() == 9) {
 		newTreeHasNine = true;
 	}
-	if (testTreeIsEmpty && newBSTContainsValues) {
+	if (testTreeIsEmpty && newBSTContainsValues && newTreeHasNine) {
 		cout << "Move constructor test passed!" << endl;
 	}
 	else {
