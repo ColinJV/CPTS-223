@@ -42,6 +42,7 @@ private:
 	HashNode<T1, T2>* mpNext;
 };
 
+// HashNode default constructor with no values
 template<class T1, class T2>
 HashNode<T1, T2>::HashNode() {
 	mKey;
@@ -49,6 +50,7 @@ HashNode<T1, T2>::HashNode() {
 	mpNext = nullptr;
 }
 
+// HashNode Constructor with values passed as parameters
 template<class T1, class T2>
 HashNode<T1, T2>::HashNode(const T1& key, const T2& value) {
 	mKey = key;
@@ -56,11 +58,14 @@ HashNode<T1, T2>::HashNode(const T1& key, const T2& value) {
 	mpNext = nullptr;
 }
 
+// HashNode destructor, all memory management is handled by HashTable object destructor
+//		so no heap management required here
 template<class T1, class T2>
 HashNode<T1, T2>::~HashNode() {
-	delete mValue;
+	
 }
 
+// HashNode Copy Constructor, never called but necessary
 template<class T1, class T2>
 HashNode<T1, T2>::HashNode(HashNode& original) {
 	mKey = original.getKey();
@@ -68,6 +73,7 @@ HashNode<T1, T2>::HashNode(HashNode& original) {
 	mpNext = nullptr;
 }
 
+// HashNode Move constructor, also never used
 template<class T1, class T2>
 HashNode<T1, T2>::HashNode(HashNode<T1, T2>&& original, HashNode<T1, T2>*& ptrOriginal) {
 	mKey = original.getKey();
@@ -76,31 +82,40 @@ HashNode<T1, T2>::HashNode(HashNode<T1, T2>&& original, HashNode<T1, T2>*& ptrOr
 	ptrOriginal = this;
 }
 
+// Mutator for next pointer
 template<class T1, class T2>
 void HashNode<T1, T2>::setNext(HashNode<T1, T2>* next) {
 	mpNext = next;
 }
 
+// Accessor for next pointer
 template<class T1, class T2>
 HashNode<T1, T2>*& HashNode<T1, T2>::getNextPtr(void) {
 	return mpNext;
 }
 
+// Accessor for key
 template<class T1, class T2>
 T1 HashNode<T1, T2>::getKey(void) {
 	return(mKey);
 }
 
+// Accessor for value
 template<class T1, class T2>
 T2 HashNode<T1, T2>::getValue(void) {
 	return(mValue);
 }
 
+// Calls displayProduct() on the template class T2
+// Precondition: T2 must be pointer to obj type and have
+//		a member called displayProduct().
 template<class T1, class T2>
 void HashNode<T1, T2>::display(ostream& out) {
 	mValue->displayProduct(out);
 }
 
+// Returns a bool if the HashNode contains a string category
+// Deprecated function from an earlier implementation of HashTable, never called
 template<class T1, class T2>
 bool HashNode<T1, T2>::hasCategory(string& searchCategory)
 {

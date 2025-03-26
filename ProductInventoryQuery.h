@@ -20,8 +20,8 @@ public:
 	void runProgram();
 
 private:
-	HashTable<string, Product*> mInventoryByID;
-	HashTable<string, Product*> mInventoryByCategory;
+	HashTable<string, Product*>* mInventoryByID;
+	HashTable<string, Product*>* mInventoryByCategory;
 
 	// Private main execution
 	void bootStrap();

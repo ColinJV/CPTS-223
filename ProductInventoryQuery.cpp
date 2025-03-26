@@ -1,15 +1,24 @@
 #include "ProductInventoryQuery.h"
 
+// ProductInventoryQuery constructor
 ProductInventoryQuery::ProductInventoryQuery()
 {
-	// creates two empty hash tables
+	int initialSize = 19;
+	mInventoryByID = new HashTable<string, Product*>(initialSize);
+	mInventoryByCategory = new HashTable<string, Product*>(initialSize);
 }
 
+// ProductInventoryQuery destructor
+// Since HashTables are created on the heap, calls HashTable destructor
 ProductInventoryQuery::~ProductInventoryQuery()
 {
-	// calls HashTable destructors
+	delete mInventoryByID;
+	delete mInventoryByCategory;
 }
 
+// Main program execution. Calls boostrap() to load inventory and display instructions.
+// Takes and evaluates user commands. Unmodified from skeleton code main() apart from
+//		incorporating this functionality into a class.
 void ProductInventoryQuery::runProgram() {
     string line;
     bootStrap();
@@ -27,6 +36,8 @@ void ProductInventoryQuery::runProgram() {
     }
 }
 
+// Displays program instructions to the user, opens the .csv file, reads the inventory from
+//		the file, then closes it. Adapted from skeleton code.
 void ProductInventoryQuery::bootStrap()
 {
     cout << "\n Welcome to Amazon Inventory Query System" << endl;
@@ -39,6 +50,8 @@ void ProductInventoryQuery::bootStrap()
 	inputStream.close();
 }
 
+// Prints a help message listing valid/supported commands for the user. Adapted from skeleton
+//		code.
 void ProductInventoryQuery::printHelp()
 {
 	cout << "Supported list of commands: " << endl;
@@ -47,6 +60,7 @@ void ProductInventoryQuery::printHelp()
 		<< endl;
 }
 
+// Returns a bool indicating if a user input command is valid. Adapted from skeleton code.
 bool ProductInventoryQuery::validCommand(string line)
 {
 	return (line == ":help") ||
@@ -54,6 +68,9 @@ bool ProductInventoryQuery::validCommand(string line)
 		(line.rfind("listInventory") == 0);
 }
 
+// Evaluates a command. Calls printHelp() for ":help". For "find", searches for the Product ID entered by the user
+//		by calling find(). For "listInventory", calls listInventory() after parsing the target category from the
+//		user inptu by calling getCategory(). Adapted from skeleton code.
 void ProductInventoryQuery::evalCommand(string line)
 {
 	if (line == ":help")
@@ -92,6 +109,10 @@ void ProductInventoryQuery::evalCommand(string line)
 	}
 }
 
+// Parses a string reference input parameter to retrieve a category. Does this by
+//		finding the first whitespace character (expected command format: "listInventory <category>").
+//		Once the first whitespace character is encountered, parses the rest of the string into a string
+//		meant to hold the search category and returns that string.
 string ProductInventoryQuery::getCategory(const string& line) {
 	string category;
 	bool stop = false;
@@ -110,6 +131,16 @@ string ProductInventoryQuery::getCategory(const string& line) {
 	return(category);
 }
 
+// Reads the inventory file line by line and populates a data structure according to the following algorithm.
+// 1. Reads and discards the first format specifier line.
+// 2. Reads a whole line and calls parseLine() to parse the line into a vector of strings called parsedTokens.
+// 3. Creates a Product object on the heap using the strings in parsedTokens.
+// 4. Adds this product to the HashTable called mInventoryByID, which hashes Products based on their Unique ID.
+// 5. Parses the Product's categories (each Product can contain more than one) into a vector of strings called categories.
+// 6. While categories is not empty, inserts the Product into the HashTable mInventoryByCategory, which hashes Products based
+//		on their category. This can result in many Products being inserted to this HashTable multiple times but results in O(1)
+//		find operations searching for an entry based on category name at the expense of space complexity.
+// 7. Repeats steps 1 - 6 until the end of the file is reached and the input stream is good.
 void ProductInventoryQuery::readInventoryFile(ifstream& inputFile)
 {
 	cout << "Populating Inventory..." << endl;
@@ -136,7 +167,7 @@ void ProductInventoryQuery::readInventoryFile(ifstream& inputFile)
 		//cout << "Created product." << endl;
 
 		// Inserts new Product to the InventoryByID HashTable with its Unique ID as the key
-		this->mInventoryByID.insert(newProduct->getUniqueID(), newProduct);
+		this->mInventoryByID->insert(newProduct->getUniqueID(), newProduct);
 
 		//cout << "Inserted Product by ID." << endl;
 
@@ -148,7 +179,7 @@ void ProductInventoryQuery::readInventoryFile(ifstream& inputFile)
 
 		// Inserts new Product to the InventoryByCategory HashTable with its Category as the key
 		while (!categories.empty()) {
-			this->mInventoryByCategory.insert(categories.back(), newProduct);
+			this->mInventoryByCategory->insert(categories.back(), newProduct);
 			categories.pop_back();
 		}
 
@@ -158,6 +189,7 @@ void ProductInventoryQuery::readInventoryFile(ifstream& inputFile)
 	cout << "> Inventory populated!" << endl;
 }
 
+// Parses an input reference to a string into multiple strings, placing them in a reference to a vector of strings called categories.
 void ProductInventoryQuery::parseCategories(const string& categoryLine, vector<string>& categories) {
 	string currentField = "";
 
@@ -180,6 +212,18 @@ void ProductInventoryQuery::parseCategories(const string& categoryLine, vector<s
 	categories.push_back(currentField);
 }
 
+// Parses an input reference to a string into multiple strings, putting each in a reference to a vector of strings called parsedTokens.
+// Parses according to the following algorithm.
+// 1. Examines the string character by character, adding the characters to a string called currentField.
+// 2. If the current character is a quote, the next character is a quote, and the subsequent character is
+//		a comma, it skips the quotes. This results in the next iteration of the primary loop seeing the comma.
+// 3. If the current character is a quote, the next character is a quote, this is an escaped quote. Adds a quote to the current token.
+// 4. If the current character is a quote and the next character is not a quote, toggles a boolean called inQuotes. While inQuotes is
+//		true, encountering a comma will not end the token.
+// 5. If the current character is a comma and inQuotes is false, pushes the current token onto the back of the vector of strings and empties
+//		the currentField string.
+// 6. If the current character is any other character, adds the character to currentField.
+// 7. Repeats until the end of the input string, at which point it pushes currentField to the vector of strings a final time.
 void ProductInventoryQuery::parseLine(const string& line, vector<string>& parsedTokens)
 {
 	string currentField = "";
@@ -216,15 +260,21 @@ void ProductInventoryQuery::parseLine(const string& line, vector<string>& parsed
 	parsedTokens.push_back(currentField);
 }
 
+// Finds an entry in the HashTable mInventoryByID by searching for a unique ID. Returns a std::pair<bool, HashNode*>.
+// If the entry exists, the bool is true and the HashNode* is to the node where the Product with that Unique ID exists.
+// If the entry does not exist, the bool is false and the HashNode* is the nullptr.
 pair<bool, HashNode<string, Product*>*> ProductInventoryQuery::findByID(const string& targetID) {
 	pair<bool, HashNode<string, Product*>*> result = { false, nullptr };
-	result.second = mInventoryByID.findByUniqueID(targetID);
+	result.second = mInventoryByID->findByUniqueID(targetID);
 	if (result.second != nullptr) {
 		result.first = true;
 	}
 	return(result);
 }
 
+// Finds an entry in the HashTable mInventoryByID by calling findByID(). If the std::pair<bool, HashNode*> that
+//		is returned indicates that the product does not exist, displays "Inventory not found" message. If the std::pair
+//		contains a true flag and valid address, calls display() on the address of the returned node.
 void ProductInventoryQuery::find(const string& targetID) {
 	pair<bool, HashNode<string, Product*>*> result = this->findByID(targetID);
 	if (result.first == false) {
@@ -235,6 +285,7 @@ void ProductInventoryQuery::find(const string& targetID) {
 	}
 }
 
+// Finds an entry in the HashTable mInventoryByCategory by calling listMatchingTargets(), a HashTable method.
 void ProductInventoryQuery::listInventory(const string& targetID) {
-	mInventoryByCategory.listMatchingTargets(cout, targetID);
+	mInventoryByCategory->listMatchingTargets(cout, targetID);
 }

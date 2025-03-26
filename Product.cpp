@@ -1,5 +1,6 @@
 #include "Product.h"
 
+// Product constructor
 Product::Product(const string& newUniqueID, const string& newProductName, const string& newBrandName,
 	const string& newAsin, const string& newCategory, const string& newUpcEanCode,
 	const string& newListPrice, const string& newSellingPrice, const string& newQuantity, const string& newModelNumber,
@@ -41,6 +42,7 @@ Product::Product(const string& newUniqueID, const string& newProductName, const 
 	this->fillEmptyFields();
 }
 
+// Checks every data member of a Product. If that member is an empty string, assigns it the value "NA"
 void Product::fillEmptyFields() {
 	if (uniqueID == "") {
 		uniqueID = "NA";
@@ -128,10 +130,12 @@ void Product::fillEmptyFields() {
 	}
 }
 
+// Product destructor
 Product::~Product() {
 
 }
 
+// Product copy constructor
 Product::Product(Product& original) {
 	uniqueID = original.getUniqueID();
 	productName = original.getProductName();
@@ -163,6 +167,7 @@ Product::Product(Product& original) {
 	productDescription = original.getProductDescription();
 }
 
+// Accessors
 string Product::getUniqueID() const
 {
 	return uniqueID;
@@ -308,6 +313,8 @@ bool Product::hasCategory(const string& searchCategory)
 	return category.find(searchCategory) != std::string::npos;
 }
 
+// Displays every data member of a Product to an output stream reference.
+// Called by findByUniqueID()
 void Product::displayProduct(ostream& out)
 {
 	out << "Unique ID: " << this->getUniqueID() << "\n";
@@ -340,6 +347,8 @@ void Product::displayProduct(ostream& out)
 	out << "Product Description: " << this->getProductDescription() << endl;
 }
 
+// Displays the Unique ID and Product Name of a Product to an output stream reference
+// Called by listMatchingTargets()
 void Product::displayIDandName(ostream& out) {
 	out << "Unique ID: " << this->getUniqueID() << "\n";
 	out << "Product Name: " << this->getProductName() << "\n" << endl;
