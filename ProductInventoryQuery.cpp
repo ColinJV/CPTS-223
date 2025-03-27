@@ -116,7 +116,7 @@ void ProductInventoryQuery::evalCommand(string line)
 string ProductInventoryQuery::getCategory(const string& line) {
 	string category;
 	bool stop = false;
-	for (int i = 0; i < line.length(); ++i) {
+	for (long unsigned int i = 0; i < line.length(); ++i) {
 		while (i < line.length() && !stop) {
 			++i;
 			if (line[i] == ' ') {
@@ -193,7 +193,7 @@ void ProductInventoryQuery::readInventoryFile(ifstream& inputFile)
 void ProductInventoryQuery::parseCategories(const string& categoryLine, vector<string>& categories) {
 	string currentField = "";
 
-	for (int i = 0; i < categoryLine.length(); ++i) {
+	for (long unsigned int i = 0; i < categoryLine.length(); ++i) {
 		char currentChar = categoryLine[i];
 
 		// Handle category separations
@@ -229,7 +229,7 @@ void ProductInventoryQuery::parseLine(const string& line, vector<string>& parsed
 	string currentField = "";
 	bool inQuotes = false;
 
-	for (int i = 0; i < line.length(); ++i)
+	for (long unsigned int i = 0; i < line.length(); ++i)
 	{
 		char currentChar = line[i];
 		// Handle weird double quotes followed by comma

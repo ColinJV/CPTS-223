@@ -155,7 +155,6 @@ void HashTable<T1, T2>::insert(const T1& key, T2& value) {
 // 5. Recomputes loadFactor for the new size.
 template <class T1, class T2>
 void HashTable<T1, T2>::resize() {
-	hash<T1> hasher;
 	int oldSize = currentSize;
 	currentSize = getNextPrime(currentSize * 2 + 1);
 
@@ -167,7 +166,7 @@ void HashTable<T1, T2>::resize() {
 	for (int i = 0; i < oldSize; ++i) {
 		HashNode<T1, T2>* pCurrent = table[i];
 		while (pCurrent != nullptr) {
-			HashNode<T1, T2>* pNext = pCurrent->getNextPtr(), * pLast = nullptr;
+			HashNode<T1, T2>* pNext = pCurrent->getNextPtr();
 			hash<T1> hasher;
 			int hashedIndex = hasher(pCurrent->getKey()) % currentSize;
 			pCurrent->setNext(newTable[hashedIndex]);
