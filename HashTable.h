@@ -264,7 +264,7 @@ void HashTable<T1, T2>::listMatchingTargets(ostream& out, const T1& targetKey) {
 		out << "No item found." << endl;
 	}
 	while (pCurrent != nullptr) {
-		pCurrent->getValue()->displayIDandName(cout);
+		pCurrent->getValue()->displayIDandName(out);
 		pCurrent = pCurrent->getNextPtr();
 	}
 }
@@ -282,9 +282,9 @@ void HashTable<T1, T2>::mergeSortAndListMatchingTargets(ostream& out, const T1& 
 	mergeSort(printList, descending);
 	auto end = chrono::high_resolution_clock::now();
 	auto time = chrono::duration_cast<chrono::microseconds>(end - start).count();
-	cout << "Time for merge sort: " << time << endl;
+	out << "Time for merge sort: " << time << endl;
 	for (int i = 0; i < printList.size(); ++i) {
-		printList[i]->getValue()->displayIDandName(cout);
+		printList[i]->getValue()->displayIDandName(out);
 	}
 }
 
@@ -301,9 +301,9 @@ void HashTable<T1, T2>::insertionSortAndListMatchingTargets(ostream& out, const 
 	insertionSort(printList, descending);
 	auto end = chrono::high_resolution_clock::now();
 	auto time = chrono::duration_cast<chrono::microseconds>(end - start).count();
-	cout << "Time for insertion sort: " << time << endl;
+	out << "Time for insertion sort: " << time << endl;
 	for (int i = 0; i < printList.size(); ++i) {
-		printList[i]->getValue()->displayIDandName(cout);
+		printList[i]->getValue()->displayIDandName(out);
 	}
 }
 
